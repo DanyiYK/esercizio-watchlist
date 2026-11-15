@@ -1,8 +1,9 @@
+export type Kinds = "film" | "serie"
 export type Show = {
     id: number
     title: string
     year: number
-    kind: "film" | "serie"
+    kind: Kinds
 }
 
 export const watchlist: Show[] = [
