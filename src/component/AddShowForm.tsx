@@ -9,6 +9,7 @@ type AddShowFormParams = {
 }
 
 const DEFAULT_SHOW_FORM_STATE = {
+    submitted: false,
     values: {
         title: "",
         year: 0,
@@ -22,6 +23,13 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
 
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
+
+        setShowFormState(prev => {
+            return {
+                ...prev,
+                submitted: true
+            }
+        })
 
         if (Object.values(formErrors).find(v => v.length)) {
             return
@@ -40,7 +48,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
         <h1 className="font-bold text-center text-xl">Aggiungi Titolo</h1>
         <Input
             placeholder="Titolo"
-            errors={formErrors.title}
+            errors={showFormState.submitted && formErrors.title || undefined}
             value={showFormState.values.title}
             onChange={(e) => setShowFormState(prev => {
                 return { ...prev, values: { ...prev.values, title: e.target.value } }
@@ -48,7 +56,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
             className="bg-gray-200 p-2 rounded-lg w-full"></Input>
         <Input
             placeholder="Anno"
-            errors={formErrors.year}
+            errors={showFormState.submitted && formErrors.year || undefined}
             type="number"
             value={showFormState.values.year.toString()}
             onChange={(e) => setShowFormState(prev => {
