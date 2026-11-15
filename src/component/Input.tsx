@@ -13,7 +13,7 @@ type InputParams = {
 const Input = ({ value, placeholder, type, className, errors, onChange }: InputParams) => {
     return <div>
         <input placeholder={placeholder} value={value} type={type} onChange={onChange} className={cn(className, {
-            "outline-red-500": errors?.length
+            "outline-red-500 outline": errors?.length
         })} />
         {errors?.map(value => <p className="text-red-500">{value}</p>)}
     </div>
