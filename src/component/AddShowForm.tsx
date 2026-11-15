@@ -13,51 +13,17 @@ const DEFAULT_SHOW_FORM_STATE = {
         title: "",
         year: 0,
         kind: "serie" as "serie" | "film"
-    },
-    errors: {
-        title: [] as string[],
-        year: [] as string[]
     }
 }
 
 const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
     const [showFormState, setShowFormState] = useState({ ...DEFAULT_SHOW_FORM_STATE })
+    const formErrors = computeErrors(showFormState.values, watchlist)
 
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        const errors = {
-            ...DEFAULT_SHOW_FORM_STATE.errors
-        }
-
-        if (showFormState.values.title === "") {
-            errors.title = ["Titolo obbligatorio!"]
-        } else {
-            if (showFormState.values.title.trim().length < 2) {
-                errors.title = ["Il titolo deve contenere almeno 2 caratteri!"]
-            }
-
-            if (/[!£$"%&/()=?^"]/.test(showFormState.values.title)) {
-                errors.title = [...errors.title, "Il titolo non può contenere caratteri speciali!"]
-            }
-
-            if (watchlist?.find(value => value.title.toLowerCase() === showFormState.values.title.trim().toLowerCase())) {
-                errors.title = [...errors.title, "Lo show è già nella lista!"]
-            }
-        }
-
-        if (showFormState.values.year < 1900 || showFormState.values.year > new Date().getFullYear()) {
-            errors.year = [`L'anno deve essere compreso tra il 1900 e il ${new Date().getFullYear()}!`]
-        }
-
-        if (Object.values(errors).find(v => v.length)) {
-            setShowFormState(prev => {
-                return {
-                    ...prev,
-                    errors: errors
-                }
-            })
-
+        if (Object.values(formErrors).find(v => v.length)) {
             return
         }
 
@@ -74,7 +40,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
         <h1 className="font-bold text-center text-xl">Aggiungi Titolo</h1>
         <Input
             placeholder="Titolo"
-            errors={showFormState.errors.title}
+            errors={formErrors.title}
             value={showFormState.values.title}
             onChange={(e) => setShowFormState(prev => {
                 return { ...prev, values: { ...prev.values, title: e.target.value } }
@@ -82,7 +48,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
             className="bg-gray-200 p-2 rounded-lg w-full"></Input>
         <Input
             placeholder="Anno"
-            errors={showFormState.errors.year}
+            errors={formErrors.year}
             type="number"
             value={showFormState.values.year.toString()}
             onChange={(e) => setShowFormState(prev => {
@@ -106,6 +72,35 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
         </div>
         <button className="rounded-full px-4 py-2 bg-blue-400">Aggiungi</button>
     </form>
+}
+
+function computeErrors(values: { title: string, year: number }, watchlist?: Show[]): { title: string[], year: string[] } {
+    const errors = {
+        title: [] as string[],
+        year: [] as string[]
+    }
+
+    if (values.title === "") {
+        errors.title = ["Titolo obbligatorio!"]
+    } else {
+        if (values.title.trim().length < 2) {
+            errors.title = ["Il titolo deve contenere almeno 2 caratteri!"]
+        }
+
+        if (/[!£$"%&/()=?^"]/.test(values.title)) {
+            errors.title = [...errors.title, "Il titolo non può contenere caratteri speciali!"]
+        }
+
+        if (watchlist?.find(value => value.title.toLowerCase() === values.title.trim().toLowerCase())) {
+            errors.title = [...errors.title, "Lo show è già nella lista!"]
+        }
+    }
+
+    if (values.year < 1900 || values.year > new Date().getFullYear()) {
+        errors.year = [`L'anno deve essere compreso tra il 1900 e il ${new Date().getFullYear()}!`]
+    }
+
+    return errors
 }
 
 export default AddShowForm
