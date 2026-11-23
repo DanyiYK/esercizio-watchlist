@@ -1,8 +1,8 @@
 import { useState } from "react"
-import AddShowForm from "./component/AddShowForm"
-import { ShowRow } from "./component/ShowRow"
-import type { Show } from "./data/watchlist"
-import { cn } from "./utils/cn"
+import AddShowForm from "@/component/AddShowForm"
+import { ShowRow } from "@/component/ShowRow"
+import type { Show } from "@/data/watchlist"
+import { cn } from "@/utils/cn"
 
 type Filter = "tutti" | "serie" | "film"
 

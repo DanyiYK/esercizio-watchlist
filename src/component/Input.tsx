@@ -1,5 +1,5 @@
 import type { HTMLInputTypeAttribute } from "react"
-import { cn } from "../utils/cn"
+import { cn } from "@/utils/cn"
 
 type InputParams = {
     value?: string,

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import { cn } from "../utils/cn"
-import type { Kinds, Show } from "../data/watchlist"
-import Input from "./Input"
+import { cn } from "@/utils/cn"
+import type { Kinds, Show } from "@/data/watchlist"
+import Input from "@/component/Input"
 
 type AddShowFormParams = {
     watchlist?: Show[],
@@ -13,7 +13,7 @@ const DEFAULT_SHOW_FORM_STATE = {
     values: {
         title: "",
         year: 0,
-        kind: "serie" as "serie" | "film"
+        kind: "serie" as "serie" | "film",
     }
 }
 
@@ -41,7 +41,14 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
             }
         })
 
-        onSubmit({ ...showFormState.values })
+        // Note: Shows are always {..., watched: false, review: 0} when they're first added
+        // It wouldn't make sense to add an already watched show into a WATCHlist, would it?
+        // I'm not sure of this aspect though, so I might change it in future
+        onSubmit({
+            ...showFormState.values,
+            watched: false,
+            review: 0
+        })
     }
 
     return <form className="flex flex-col gap-4 w-sm" onSubmit={handleSubmit}>

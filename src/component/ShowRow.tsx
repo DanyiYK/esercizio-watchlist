@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { watchlist, type Show } from "../data/watchlist";
-import { cn } from "../utils/cn";
+import { cn } from "@/utils/cn";
+import type { Show } from "@/data/watchlist";
 
 type ShowRowProps = {
     show: Show,
