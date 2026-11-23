@@ -1,1 +1,61 @@
-{}
+{
+  "show": [
+    {
+      "id": "1",
+      "title": "La Casa di Carta",
+      "year": 2005,
+      "kind": "serie",
+      "watched": true,
+      "review": 5
+    },
+    {
+      "id": "2",
+      "title": "Il Padrino",
+      "year": 1995,
+      "kind": "film",
+      "watched": true,
+      "review": 2
+    },
+    {
+      "id": "3",
+      "title": "Avengers",
+      "year": 2021,
+      "kind": "film",
+      "watched": true,
+      "review": 4
+    },
+    {
+      "id": "4",
+      "title": "Reacher",
+      "year": 2022,
+      "kind": "serie",
+      "watched": false,
+      "review": 0
+    },
+    {
+      "id": "5",
+      "title": "Stranger Things",
+      "year": 2018,
+      "kind": "serie",
+      "watched": true,
+      "review": 1
+    },
+    {
+      "id": "6",
+      "title": "Fantastici 4",
+      "year": 2008,
+      "kind": "film",
+      "watched": false,
+      "review": 0
+    },
+    {
+      "title": "asdasd",
+      "year": 2020,
+      "kind": "serie",
+      "watched": false,
+      "review": 0,
+      "id": "WwlbKXcA-G0"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

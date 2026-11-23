@@ -12,7 +12,7 @@ export function ShowRow({ show, onClick }: ShowRowProps) {
     const [watched, setWatched] = useState(false)
 
     return (
-        <div onClick={onClick} className="flex justify-between items-center px-4 py-2 border border-gray-400 rounded-lg">
+        <div onClick={onClick} className="flex justify-between items-center px-4 py-2 border border-gray-400 rounded-lg w-full">
             <div className="flex flex-col justify-between items-center w-full">
                 <div className="flex flex-col w-full">
                     <p className={cn("font-bold capitalize", watched && "line-through")}>{show.title}</p>
