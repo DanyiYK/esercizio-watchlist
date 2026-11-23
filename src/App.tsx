@@ -1,7 +1,7 @@
 import { useState } from "react"
 import AddShowForm from "./component/AddShowForm"
 import { ShowRow } from "./component/ShowRow"
-import { watchlist as initialWatchList, type Show } from "./data/watchlist"
+import type { Show } from "./data/watchlist"
 import { cn } from "./utils/cn"
 
 type Filter = "tutti" | "serie" | "film"
@@ -10,7 +10,7 @@ type Filter = "tutti" | "serie" | "film"
 function App() {
   const [nextWatch, setNextWatch] = useState<Show>()
   const [activeFilter, setActiveFilter] = useState<Filter>("tutti")
-  const [watchlist, setWatchlist] = useState(initialWatchList);
+  const [watchlist, setWatchlist] = useState<Show[]>([]);
 
   function OnShowClick(show: Show) {
     if (nextWatch?.id === show.id) {
