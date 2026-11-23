@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { cn } from "@/utils/cn"
 import type { Kinds, Show } from "@/data/watchlist"
 import Input from "@/component/Input"
+import { MorphIcon } from "morphicons/react"
+import { Loader2, Plus } from "lucide"
 
 type AddShowFormParams = {
     watchlist?: Show[],
@@ -19,8 +21,9 @@ const DEFAULT_SHOW_FORM_STATE = {
 
 const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
     const [showFormState, setShowFormState] = useState({ ...DEFAULT_SHOW_FORM_STATE })
-    const formErrors = computeErrors(showFormState.values, watchlist)
+    const [adding, setAdding] = useState(false)
 
+    const formErrors = computeErrors(showFormState.values, watchlist)
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
 
@@ -85,7 +88,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
                 >{filtro}</button>)
             }
         </div>
-        <button className="rounded-full px-4 py-2 bg-blue-400">Aggiungi</button>
+        <button className="rounded-full px-4 py-2 bg-blue-400 flex gap-2 items-center justify-center"><MorphIcon icon={adding ? Loader2 : Plus} /> <span>Aggiungi</span></button>
     </form>
 }
 
