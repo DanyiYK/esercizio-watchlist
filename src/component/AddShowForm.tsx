@@ -35,7 +35,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
             return
         }
 
-        setShowFormState(_ => {
+        setShowFormState(() => {
             return {
                 ...DEFAULT_SHOW_FORM_STATE
             }
@@ -79,7 +79,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
                         "bg-blue-400": showFormState.values.kind === filtro
                     })
                     }
-                    onClick={_ => setShowFormState(prev => {
+                    onClick={() => setShowFormState(prev => {
                         return { ...prev, values: { ...prev.values, kind: filtro as Kinds } }
                     })}
                 >{filtro}</button>)

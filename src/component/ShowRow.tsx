@@ -19,7 +19,7 @@ export function ShowRow({ show, onClick }: ShowRowProps) {
                     <p className="opacity-75">{show.year}</p>
                 </div>
                 <div className="text-3xl select-none w-full flex items-center">
-                    {[1, 2, 3, 4, 5].map(value => <span className={cn("text-gray-400 duration-75 hover:opacity-75", value <= stars && "text-yellow-500")} onClick={e => {
+                    {[1, 2, 3, 4, 5].map(value => <span key={value} className={cn("text-gray-400 duration-75 hover:opacity-75", value <= stars && "text-yellow-500")} onClick={e => {
                         e.stopPropagation();
 
                         if (stars === value) return setStars(0);
