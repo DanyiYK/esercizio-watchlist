@@ -9,5 +9,8 @@ export default defineConfig({
     watch: {
       ignored: ["**/db.json"]
     }
+  },
+  resolve: {
+    tsconfigPaths: true
   }
 })
