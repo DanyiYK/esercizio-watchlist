@@ -71,6 +71,14 @@ function App() {
     })])
   }
 
+  async function deleteShow(show: Show) {
+    await fetch(`${env.VITE_API_URL}/show/${show.id}`, {
+      method: "DELETE",
+    })
+
+    setWatchlist(prev => prev.filter(value => value.id != show.id))
+  }
+
   return (
     <>
       <div className="flex flex-col justify-center items-center p-12">
@@ -92,7 +100,7 @@ function App() {
 
         <div className="w-xl flex flex-col justify-center items-center gap-4 py-4">
           {loading && <Loader2 className="animate-spin" />}
-          {watchlist.filter(show => activeFilter === "tutti" || show.kind === activeFilter).map(show => <ShowRow onClick={() => OnShowClick(show)} show={show} key={show.id} showUpdated={updateShow} onEdit={() => setEditingShow(show)}></ShowRow>)}
+          {watchlist.filter(show => activeFilter === "tutti" || show.kind === activeFilter).map(show => <ShowRow onDelete={() => deleteShow(show)} onClick={() => OnShowClick(show)} show={show} key={show.id} showUpdated={updateShow} onEdit={() => setEditingShow(show)}></ShowRow>)}
         </div>
 
         <p>{watchlist.length} titoli: {watchlist.filter(show => show.kind === "film").length} film e {watchlist.filter(show => show.kind === "serie").length} serie</p>

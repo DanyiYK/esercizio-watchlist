@@ -1,6 +1,6 @@
 import type { Show } from "@/data/watchlist";
 import { cn } from "@/utils/cn";
-import { Edit, Loader2 } from "lucide-react";
+import { Edit, Loader2, Trash } from "lucide-react";
 import { useState } from "react";
 
 type ShowRowProps = {
@@ -8,10 +8,11 @@ type ShowRowProps = {
     disabled?: boolean,
     onClick: () => void,
     onEdit: () => void,
+    onDelete: () => Promise<void>,
     showUpdated: (show: Show) => Promise<void>,
 }
 
-export function ShowRow({ show, onClick, onEdit, showUpdated }: ShowRowProps) {
+export function ShowRow({ show, onClick, onDelete, onEdit, showUpdated }: ShowRowProps) {
     const [disabled, setDisabled] = useState(false)
 
     async function showUpdatedWrapper(show: Show) {
@@ -47,6 +48,9 @@ export function ShowRow({ show, onClick, onEdit, showUpdated }: ShowRowProps) {
                     })}>{show.kind}</span>
                     <button onClick={e => { e.stopPropagation(); onEdit() }} type="button" className="p-1 rounded-lg bg-gray-300 hover:opacity-75 duration-75 hover:cursor-pointer">
                         <Edit />
+                    </button>
+                    <button onClick={onDelete} type="button" className="p-1 rounded-lg bg-gray-300 hover:opacity-75 duration-75 hover:cursor-pointer">
+                        <Trash />
                     </button>
                     <input className="hover:cursor-pointer" disabled={disabled} type="checkbox" checked={show.watched} onClick={e => e.stopPropagation()} onChange={e => { showUpdatedWrapper({ ...show, watched: e.target.checked }) }} />
                 </div>
