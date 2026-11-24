@@ -13,6 +13,7 @@ function App() {
   const [nextWatch, setNextWatch] = useState<Show>()
   const [activeFilter, setActiveFilter] = useState<Filter>("tutti")
   const [watchlist, setWatchlist] = useState<Show[]>([])
+  const [editingShow, setEditingShow] = useState<Show>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -51,6 +52,25 @@ function App() {
     })
   }
 
+  async function updateShow(show: Show) {
+    const response = await fetch(`${env.VITE_API_URL}/show/${show.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(show)
+    })
+
+    const data = await response.json()
+
+    // I'm using .map here because I don't want the order of the items to change
+    setWatchlist(prev => [...prev.map(value => {
+      if (value.id != show.id) return value;
+
+      return data
+    })])
+  }
+
   return (
     <>
       <div className="flex flex-col justify-center items-center p-12">
@@ -72,13 +92,13 @@ function App() {
 
         <div className="w-xl flex flex-col justify-center items-center gap-4 py-4">
           {loading && <Loader2 className="animate-spin" />}
-          {watchlist.filter(show => activeFilter === "tutti" || show.kind === activeFilter).map(show => <ShowRow onClick={() => OnShowClick(show)} show={show} key={show.id}></ShowRow>)}
+          {watchlist.filter(show => activeFilter === "tutti" || show.kind === activeFilter).map(show => <ShowRow onClick={() => OnShowClick(show)} show={show} key={show.id} showUpdated={updateShow}></ShowRow>)}
         </div>
 
         <p>{watchlist.length} titoli: {watchlist.filter(show => show.kind === "film").length} film e {watchlist.filter(show => show.kind === "serie").length} serie</p>
         {nextWatch && <p className="font-bold">Stasera guardo: <span className="capitalize">{nextWatch.title}</span></p>}
 
-        <AddShowForm watchlist={watchlist} onSubmit={show => addShow(show)} />
+        <AddShowForm watchlist={watchlist} defaultValues={editingShow} onSubmit={show => addShow(show)} />
       </div>
 
     </>

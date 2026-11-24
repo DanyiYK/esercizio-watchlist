@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { use, useEffect, useState } from "react"
 import { cn } from "@/utils/cn"
 import type { Kinds, Show } from "@/data/watchlist"
 import Input from "@/component/Input"
@@ -7,7 +7,8 @@ import { Loader2, Plus } from "lucide"
 
 type AddShowFormParams = {
     watchlist?: Show[],
-    onSubmit: (show: Omit<Show, "id">) => void
+    defaultValues?: Omit<Show, "id">,
+    onSubmit: (show: Omit<Show, "id">) => Promise<void>
 }
 
 const DEFAULT_SHOW_FORM_STATE = {
@@ -19,12 +20,22 @@ const DEFAULT_SHOW_FORM_STATE = {
     }
 }
 
-const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
+const AddShowForm = ({ watchlist, defaultValues, onSubmit }: AddShowFormParams) => {
     const [showFormState, setShowFormState] = useState({ ...DEFAULT_SHOW_FORM_STATE })
-    const [adding, setAdding] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const formErrors = computeErrors(showFormState.values, watchlist)
-    function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+
+    useEffect(() => {
+        setShowFormState(_ => {
+            return {
+                ...DEFAULT_SHOW_FORM_STATE,
+                values: defaultValues || DEFAULT_SHOW_FORM_STATE.values
+            }
+        })
+    }, [defaultValues])
+
+    async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
 
         setShowFormState(prev => {
@@ -44,14 +55,18 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
             }
         })
 
+        setLoading(true)
+
         // Note: Shows are always {..., watched: false, review: 0} when they're first added
         // It wouldn't make sense to add an already watched show into a WATCHlist, would it?
         // I'm not sure of this aspect though, so I might change it in future
-        onSubmit({
+        await onSubmit({
             ...showFormState.values,
             watched: false,
             review: 0
         })
+
+        setLoading(false)
     }
 
     return <form className="flex flex-col gap-4 w-sm" onSubmit={handleSubmit}>
@@ -88,7 +103,7 @@ const AddShowForm = ({ watchlist, onSubmit }: AddShowFormParams) => {
                 >{filtro}</button>)
             }
         </div>
-        <button className="rounded-full px-4 py-2 bg-blue-400 flex gap-2 items-center justify-center"><MorphIcon icon={adding ? Loader2 : Plus} /> <span>Aggiungi</span></button>
+        <button className="rounded-full px-4 py-2 bg-blue-400 flex gap-2 items-center justify-center"><MorphIcon className={cn(loading && "animate-spin")} icon={loading ? Loader2 : Plus} /> <span>Aggiungi</span></button>
     </form>
 }
 
