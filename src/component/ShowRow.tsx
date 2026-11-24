@@ -1,16 +1,17 @@
 import type { Show } from "@/data/watchlist";
 import { cn } from "@/utils/cn";
-import { Loader2 } from "lucide-react";
+import { Edit, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 type ShowRowProps = {
     show: Show,
     disabled?: boolean,
     onClick: () => void,
-    showUpdated: (show: Show) => Promise<void>
+    onEdit: () => void,
+    showUpdated: (show: Show) => Promise<void>,
 }
 
-export function ShowRow({ show, onClick, showUpdated }: ShowRowProps) {
+export function ShowRow({ show, onClick, onEdit, showUpdated }: ShowRowProps) {
     const [disabled, setDisabled] = useState(false)
 
     async function showUpdatedWrapper(show: Show) {
@@ -44,7 +45,10 @@ export function ShowRow({ show, onClick, showUpdated }: ShowRowProps) {
                         "bg-yellow-200": show.kind === 'film',
                         "bg-purple-200": show.kind === 'serie',
                     })}>{show.kind}</span>
-                    <input disabled={disabled} type="checkbox" checked={show.watched} onClick={e => e.stopPropagation()} onChange={e => { showUpdatedWrapper({ ...show, watched: e.target.checked }) }} />
+                    <button onClick={e => { e.stopPropagation(); onEdit() }} type="button" className="p-1 rounded-lg bg-gray-300 hover:opacity-75 duration-75 hover:cursor-pointer">
+                        <Edit />
+                    </button>
+                    <input className="hover:cursor-pointer" disabled={disabled} type="checkbox" checked={show.watched} onClick={e => e.stopPropagation()} onChange={e => { showUpdatedWrapper({ ...show, watched: e.target.checked }) }} />
                 </div>
             </>}
         </div>

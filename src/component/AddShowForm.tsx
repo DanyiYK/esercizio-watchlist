@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn"
 import type { Kinds, Show } from "@/data/watchlist"
 import Input from "@/component/Input"
 import { MorphIcon } from "morphicons/react"
-import { Loader2, Plus } from "lucide"
+import { Edit, Loader2, Plus } from "lucide"
 
 type AddShowFormParams = {
     watchlist?: Show[],
@@ -103,7 +103,7 @@ const AddShowForm = ({ watchlist, defaultValues, onSubmit }: AddShowFormParams) 
                 >{filtro}</button>)
             }
         </div>
-        <button className="rounded-full px-4 py-2 bg-blue-400 flex gap-2 items-center justify-center"><MorphIcon className={cn(loading && "animate-spin")} icon={loading ? Loader2 : Plus} /> <span>Aggiungi</span></button>
+        <button className="rounded-full px-4 py-2 bg-blue-400 flex gap-2 items-center justify-center"><MorphIcon className={cn(loading && "animate-spin")} icon={loading ? Loader2 : defaultValues ? Edit : Plus} /> <span>{defaultValues ? "Modifica" : "Aggiungi"}</span></button>
     </form>
 }
 
